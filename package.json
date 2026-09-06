@@ -11,7 +11,7 @@
     "build:all": "npm run lint && npm run build && npm run pdf"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "puppeteer": "^23.0.0"
+    "@11ty/eleventy": "^3.0.0",
+    "puppeteer": "^25.0.0"
   }
 }

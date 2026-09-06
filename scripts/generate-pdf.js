@@ -54,7 +54,7 @@ function startServer(rootDir) {
   console.log(`Rendering ${url} -> book.pdf ...`);
 
   const browser = await puppeteer.launch({
-    headless: "new",
+    headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
