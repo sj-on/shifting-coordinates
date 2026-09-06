@@ -4,11 +4,14 @@
   "description": "geography that refuses to sit still.",
   "private": true,
   "scripts": {
+    "clean": "node scripts/clean.js",
     "dev": "eleventy --serve",
     "build": "eleventy",
     "lint": "node scripts/check-lowercase.js",
     "pdf": "node scripts/generate-pdf.js",
-    "build:all": "npm run lint && npm run build && npm run pdf"
+    "build:all": "npm run lint && npm run build && npm run pdf",
+    "restart:dev": "npm run clean && npm run dev",
+    "restart:build": "npm run clean && npm run build:all"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
