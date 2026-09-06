@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "eleventy --serve",
     "build": "eleventy",
+    "lint": "node scripts/check-lowercase.js",
     "pdf": "node scripts/generate-pdf.js",
-    "build:all": "npm run build && npm run pdf"
+    "build:all": "npm run lint && npm run build && npm run pdf"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",

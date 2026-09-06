@@ -1,4 +1,18 @@
 module.exports = function (eleventyConfig) {
+  // House style: everything on the site is lowercase. Warn (don't block) on
+  // every dev/build pass so a stray capital gets noticed immediately; the
+  // strict, build-breaking check lives in `npm run lint`.
+  eleventyConfig.on("beforeBuild", () => {
+    try {
+      require("child_process").execSync("node scripts/check-lowercase.js --warn", {
+        cwd: __dirname,
+        stdio: "inherit",
+      });
+    } catch (e) {
+      // never let the lint step itself break a build
+    }
+  });
+
   // Static assets
   eleventyConfig.addPassthroughCopy("src/css");
   eleventyConfig.addPassthroughCopy("src/images");

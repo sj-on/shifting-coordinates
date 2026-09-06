@@ -8,9 +8,16 @@ the whole site — including this readme's sibling pages, chapter titles, and
 body copy — is written in lowercase on purpose. it's a style choice, not a
 bug: keep new chapters lowercase too, since the design (fonts, spacing,
 the postcard/stamp motifs) was built assuming no capital letters anywhere.
-acronyms like "upsc" and "pdf" are lowercased as well, for consistency —
-if that ever reads oddly in a specific sentence, that's a judgment call you
-can override per-chapter.
+acronyms like "upsc" and "pdf" are lowercased as well, for consistency.
+
+a `npm run lint` command checks this automatically — see "keeping it
+lowercase" below.
+
+## repo name
+
+`shifting-coordinates` — already used as the folder name and in
+`package.json`. worth using the same name if you push this to github/gitlab
+so the url matches the project everywhere (`github.com/you/shifting-coordinates`).
 
 ## running it
 
@@ -67,6 +74,36 @@ chain — it doesn't need to match the filename. first and last chapters
 automatically drop their "previous"/"next" button; you don't need to manage
 that by hand.
 
+## keeping it lowercase
+
+`scripts/check-lowercase.js` scans every chapter's markdown (front matter and
+body) plus `src/_data/site.json` for stray capital letters. it skips fenced
+code blocks and inline code spans, since real code can legitimately have caps.
+
+```bash
+npm run lint          # exits with an error and lists every violation
+node scripts/check-lowercase.js --warn   # same check, never fails the build
+```
+
+it also runs automatically (in warn-only mode) on every `npm run dev` /
+`npm run build`, so you'll see a note in the terminal the moment a capital
+letter sneaks in — without that alone blocking your local dev server.
+`npm run build:all` (the one you'd actually deploy with) runs the strict
+version first and refuses to build the pdf if anything's flagged.
+
+if a capital letter is genuinely intentional — a proper noun you want
+preserved, say — add this to the end of that specific line and it'll be
+skipped:
+
+```
+some line with a Deliberate Capital <!-- lint: allow-caps -->
+```
+
+note this only checks `src/chapters/*.md` and `site.json` — the prose you'll
+actually be writing per chapter. it deliberately doesn't scan `.njk`/`.css`
+files, since those contain SVG path data and hex colors (`#FF4FA3`) where
+capital letters are normal and not a style violation.
+
 ## project structure
 
 ```
@@ -84,4 +121,6 @@ src/
                               for the pdf export (not linked in the nav)
 scripts/
   generate-pdf.js             serves _site locally + drives puppeteer
+  check-lowercase.js           house-style lint (see "keeping it lowercase")
+.editorconfig                  shared whitespace/indent rules across editors
 ```
