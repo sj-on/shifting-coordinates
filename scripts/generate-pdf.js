@@ -53,12 +53,13 @@ function startServer(rootDir) {
 
   console.log(`Rendering ${url} -> book.pdf ...`);
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-
+  let browser;
   try {
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle0" });
     await page.pdf({
@@ -69,7 +70,7 @@ function startServer(rootDir) {
     });
     console.log(`Done: ${OUTPUT_PDF}`);
   } finally {
-    await browser.close();
+    if (browser) await browser.close();
     server.close();
   }
 })();

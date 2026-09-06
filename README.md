@@ -44,8 +44,15 @@ npm run pdf
 
 the first time you install, puppeteer downloads its own bundled chromium —
 that needs a normal internet connection (this step can't run in a sandboxed
-or offline environment). after that it's fully local, no external services
-involved.
+or offline environment). on ubuntu/debian, chromium also needs its host
+libraries installed once:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y libatk1.0-0 libatk-bridge2.0-0 libasound2t64 libgbm1 libnss3
+```
+
+after that it's fully local, with no external services involved.
 
 if you deploy the site (netlify, github pages, vercel, etc.), run
 `npm run build:all` as your build command so `book.pdf` ends up in `_site/`
