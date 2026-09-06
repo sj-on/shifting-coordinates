@@ -1,0 +1,16 @@
+{
+  "name": "shifting-coordinates",
+  "version": "1.0.0",
+  "description": "geography that refuses to sit still.",
+  "private": true,
+  "scripts": {
+    "dev": "eleventy --serve",
+    "build": "eleventy",
+    "pdf": "node scripts/generate-pdf.js",
+    "build:all": "npm run build && npm run pdf"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "puppeteer": "^23.0.0"
+  }
+}

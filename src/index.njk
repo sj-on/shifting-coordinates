@@ -1,0 +1,35 @@
+---
+layout: layouts/base.njk
+title: shifting coordinates
+---
+<section class="hero">
+  <svg class="compass-doodle" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="44" stroke="#21294A" stroke-width="4"/>
+    <circle cx="50" cy="50" r="3" fill="#21294A"/>
+    <path d="M50 12 L58 50 L50 88 L42 50 Z" fill="#FF4FA3" stroke="#21294A" stroke-width="2"/>
+    <path d="M12 50 L50 42 L88 50 L50 58 Z" fill="#FFCE3E" stroke="#21294A" stroke-width="2"/>
+  </svg>
+  <h1>shifting <span>coordinates</span></h1>
+  <p class="tagline">the physical world, minus the boring parts. <span class="highlight">written between upsc mock tests</span> because hobbies only survive if you actually build something with them.</p>
+</section>
+
+<div class="stamp-wrap">
+  <a class="stamp-btn" href="/book.pdf" download>
+    <span class="stamp-line1">grab the</span>
+    <span class="stamp-line2">whole book</span>
+    <span class="stamp-line3">★ pdf edition ★</span>
+  </a>
+</div>
+
+<h2 class="toc-heading">table of contents (such as it is)</h2>
+
+<div class="toc-grid">
+  {% for chapter in collections.chapters %}
+  <a class="postcard" href="{{ chapter.url }}">
+    <span class="chapter-number">{{ chapter.data.order }}</span>
+    <h3>{{ chapter.data.title }}</h3>
+    <p>{{ chapter.data.summary }}</p>
+    <span class="read-link">read this chapter</span>
+  </a>
+  {% endfor %}
+</div>

@@ -1,0 +1,44 @@
+---
+layout: layouts/base.njk
+---
+{% set chapters = collections.chapters %}
+{% set idx = chapters | findIndexByUrl(page.url) %}
+{% set prevChapter = chapters[idx - 1] if idx > 0 else null %}
+{% set nextChapter = chapters[idx + 1] if idx < (chapters.length - 1) else null %}
+
+<a class="back-home" href="/">back to the table of contents</a>
+
+<article class="chapter-page">
+  <span class="chapter-tag">chapter {{ order }}</span>
+  <h1>{{ title }}</h1>
+  {% if subtitle %}<p class="chapter-subtitle">{{ subtitle }}</p>{% endif %}
+  <div class="chapter-body">
+    {{ content | safe }}
+  </div>
+</article>
+
+<nav class="chapter-nav">
+  {% if prevChapter %}
+  <a class="signpost prev" href="{{ prevChapter.url }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    <span>
+      <span class="signpost-label">previous</span>
+      {{ prevChapter.data.title }}
+    </span>
+  </a>
+  {% else %}
+  <span class="spacer"></span>
+  {% endif %}
+
+  {% if nextChapter %}
+  <a class="signpost next" href="{{ nextChapter.url }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    <span>
+      <span class="signpost-label">next</span>
+      {{ nextChapter.data.title }}
+    </span>
+  </a>
+  {% else %}
+  <span class="spacer"></span>
+  {% endif %}
+</nav>

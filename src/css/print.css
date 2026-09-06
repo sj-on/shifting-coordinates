@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@400;500;600;700&display=swap');
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 12.5pt;
+  line-height: 1.55;
+  color: #21294A;
+}
+
+.cover {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  page-break-after: always;
+}
+
+.cover h1 {
+  font-family: 'Chewy', cursive;
+  font-size: 3.4rem;
+  margin: 0 0 0.6rem;
+  color: #FF4FA3;
+}
+
+.cover-tagline {
+  font-size: 1.1rem;
+  max-width: 26rem;
+}
+
+.toc-page {
+  page-break-after: always;
+  padding: 3rem 2.5rem;
+}
+
+.toc-page h2 {
+  font-family: 'Chewy', cursive;
+  font-size: 1.8rem;
+  color: #04998A;
+}
+
+.toc-page ol { font-size: 1.05rem; line-height: 2; }
+
+.print-chapter {
+  padding: 2.2rem 3rem;
+  page-break-after: always;
+}
+
+.print-chapter:last-child { page-break-after: auto; }
+
+.print-chapter-number {
+  text-transform: none;
+  font-weight: 600;
+  color: #04998A;
+  margin: 0 0 0.2rem;
+}
+
+.print-chapter h1 {
+  font-family: 'Chewy', cursive;
+  font-size: 2rem;
+  margin: 0 0 0.2rem;
+  color: #21294A;
+}
+
+.print-subtitle {
+  font-style: italic;
+  color: #565b7d;
+  margin: 0 0 1.4rem;
+}
+
+.print-chapter h2 {
+  font-family: 'Chewy', cursive;
+  font-size: 1.3rem;
+  color: #FF4FA3;
+  margin-top: 1.6rem;
+}
+
+.print-chapter blockquote {
+  border-left: 3px dashed #FF6B35;
+  margin: 1rem 0;
+  padding: 0.3rem 0.9rem;
+  background: #FFF7EA;
+}
+
+@page {
+  margin: 20mm 18mm;
+}

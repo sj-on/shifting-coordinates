@@ -1,0 +1,36 @@
+---
+permalink: /print/index.html
+eleventyExcludeFromCollections: true
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ site.title }}</title>
+  <link rel="stylesheet" href="/css/print.css">
+</head>
+<body>
+  <section class="cover">
+    <h1>{{ site.title }}</h1>
+    <p class="cover-tagline">{{ site.tagline }}</p>
+  </section>
+
+  <section class="toc-page">
+    <h2>contents</h2>
+    <ol>
+      {% for chapter in collections.chapters %}
+      <li>{{ chapter.data.title }}</li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  {% for chapter in collections.chapters %}
+  <article class="print-chapter">
+    <p class="print-chapter-number">chapter {{ chapter.data.order }}</p>
+    <h1>{{ chapter.data.title }}</h1>
+    {% if chapter.data.subtitle %}<p class="print-subtitle">{{ chapter.data.subtitle }}</p>{% endif %}
+    {{ chapter.templateContent | safe }}
+  </article>
+  {% endfor %}
+</body>
+</html>
