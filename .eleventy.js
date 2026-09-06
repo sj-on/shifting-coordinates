@@ -16,6 +16,7 @@ module.exports = function (eleventyConfig) {
   // Static assets
   eleventyConfig.addPassthroughCopy("src/css");
   eleventyConfig.addPassthroughCopy("src/images");
+  eleventyConfig.addPassthroughCopy({ "src/icons": "." });
 
   // Sorted chapter collection (by front-matter "order", not filename)
   eleventyConfig.addCollection("chapters", (collectionApi) => {

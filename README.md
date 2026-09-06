@@ -19,6 +19,59 @@ lowercase" below.
 `package.json`. worth using the same name if you push this to github/gitlab
 so the url matches the project everywhere (`github.com/you/shifting-coordinates`).
 
+## before you deploy: set your real url
+
+`src/_data/site.json` has a placeholder `"url": "https://example.com"`.
+canonical links, open graph/twitter tags, `sitemap.xml`, and `robots.txt` all
+build off this value — update it to your actual domain before deploying, or
+search engines and social previews will point at `example.com`.
+
+## seo & favicons
+
+what's already wired up, so you don't have to think about it per chapter:
+
+- **favicons** — `src/icons/favicon.svg` (vector, modern browsers),
+  `favicon.ico` (16/32/48px, older browsers), `apple-touch-icon.png` (180px,
+  ios home screen), `icon-192.png`/`icon-512.png` (android/pwa), and
+  `site.webmanifest`. all generated from one source svg — see "updating the
+  favicon" below if you want to change the mark.
+- **per-page title & description** — every page gets `"<page title> —
+  shifting coordinates"` automatically (the homepage just gets the site
+  title, no double-up). each chapter's meta description is pulled straight
+  from its `summary` front matter field — no separate seo field to fill in.
+- **canonical urls, open graph, twitter cards** — all built from `site.url`
+  + the page's own url, so no per-page work needed. chapters get
+  `og:type: article`, the homepage gets `website`.
+- **social share image** — `src/icons/og-image.png` (1200×630), shown when
+  a link to the site is shared on twitter/slack/imessage/etc. one shared
+  image for the whole site for now; if you want a distinct image per
+  chapter later, that'd mean generating one per chapter and overriding
+  `pageImage` in `base.njk` from a front-matter field.
+- **sitemap.xml / robots.txt** — generated automatically from the chapters
+  collection (`src/sitemap.njk`, `src/robots.njk`). the hidden `/print/`
+  page is excluded from both and carries its own `noindex` tag, since it's
+  pdf-export plumbing, not a real page.
+
+### updating the favicon
+
+edit `src/icons/favicon.svg`, then regenerate the raster sizes:
+
+```bash
+cd src/icons
+for size in 16 32 48 180 192 512; do
+  rsvg-convert -w $size -h $size favicon.svg -o "tmp-$size.png"
+done
+convert tmp-16.png tmp-32.png tmp-48.png favicon.ico
+mv tmp-180.png apple-touch-icon.png
+mv tmp-192.png icon-192.png
+mv tmp-512.png icon-512.png
+rm -f tmp-*.png
+```
+
+needs `librsvg2-bin` (for `rsvg-convert`) and `imagemagick` (for `convert`)
+installed locally — on debian/ubuntu: `apt install librsvg2-bin imagemagick`.
+on macos: `brew install librsvg imagemagick`.
+
 ## running it
 
 ```bash
@@ -26,6 +79,20 @@ npm install
 npm run dev      # local dev server with live reload, http://localhost:8080
 npm run build    # builds the static site into _site/
 ```
+
+## starting fresh
+
+`_site/` isn't cleared automatically between runs, so stale output (an old
+`book.pdf`, a chapter you deleted, etc.) can hang around otherwise. two
+scripts wipe `_site/` first and then do a normal run:
+
+```bash
+npm run restart:dev     # clean, then npm run dev
+npm run restart:build   # clean, then npm run build:all (lint + build + pdf)
+```
+
+`npm run clean` on its own just deletes `_site/`, if you want that without
+immediately rebuilding.
 
 ## generating the pdf
 
@@ -44,15 +111,8 @@ npm run pdf
 
 the first time you install, puppeteer downloads its own bundled chromium —
 that needs a normal internet connection (this step can't run in a sandboxed
-or offline environment). on ubuntu/debian, chromium also needs its host
-libraries installed once:
-
-```bash
-sudo apt-get update
-sudo apt-get install -y libatk1.0-0 libatk-bridge2.0-0 libasound2t64 libgbm1 libnss3
-```
-
-after that it's fully local, with no external services involved.
+or offline environment). after that it's fully local, no external services
+involved.
 
 if you deploy the site (netlify, github pages, vercel, etc.), run
 `npm run build:all` as your build command so `book.pdf` ends up in `_site/`
@@ -115,19 +175,25 @@ capital letters are normal and not a style violation.
 
 ```
 src/
-  _data/site.json          site title, tagline, description
+  _data/site.json          site title, tagline, description, url
   _includes/layouts/
-    base.njk                shared html shell
+    base.njk                shared html shell + all seo/meta tags
     chapter.njk              chapter layout + prev/next logic
   css/
     style.css                the goofy on-site look
     print.css                plain, readable book typesetting for the pdf
+  icons/                      favicons, og-image.png, site.webmanifest
+                              (passthrough-copied to the site root)
   chapters/                  one markdown file per chapter
+    chapters.11tydata.js      shared defaults (tags, layout, computed permalink)
   index.njk                  homepage / table of contents
   print.njk                  hidden page that concatenates all chapters
                               for the pdf export (not linked in the nav)
+  robots.njk                  generates /robots.txt
+  sitemap.njk                 generates /sitemap.xml from the chapters collection
 scripts/
   generate-pdf.js             serves _site locally + drives puppeteer
   check-lowercase.js           house-style lint (see "keeping it lowercase")
+  clean.js                     removes _site/ (used by restart:dev / restart:build)
 .editorconfig                  shared whitespace/indent rules across editors
 ```

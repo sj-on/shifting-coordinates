@@ -1,0 +1,21 @@
+{
+  "name": "shifting coordinates",
+  "short_name": "coordinates",
+  "description": "a mostly unserious tour of the physical world, built for procrastinating on upsc prep responsibly.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBF1DE",
+  "theme_color": "#FF4FA3",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
